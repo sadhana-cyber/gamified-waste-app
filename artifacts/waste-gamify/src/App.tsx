@@ -8,6 +8,7 @@ import { publishableKeyFromHost } from "@clerk/react/internal";
 import { shadcn } from "@clerk/themes";
 
 import { Layout } from "@/components/layout";
+import { DbUserProvider } from "@/contexts/db-user-context";
 import Dashboard from "@/pages/dashboard";
 import LogWaste from "@/pages/log-waste";
 import Leaderboard from "@/pages/leaderboard";
@@ -119,9 +120,11 @@ function ProtectedRoute({ component: Component }: { component: React.ComponentTy
   return (
     <>
       <Show when="signed-in">
-        <Layout>
-          <Component />
-        </Layout>
+        <DbUserProvider>
+          <Layout>
+            <Component />
+          </Layout>
+        </DbUserProvider>
       </Show>
       <Show when="signed-out">
         <Redirect to="/" />

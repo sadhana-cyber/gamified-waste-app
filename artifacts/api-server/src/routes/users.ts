@@ -43,6 +43,86 @@ router.post("/", async (req, res) => {
   });
 });
 
+router.post("/sync", async (req, res) => {
+  const { clerkId, name, email } = req.body as { clerkId?: string; name?: string; email?: string };
+  if (!clerkId || !email) {
+    res.status(400).json({ error: "clerkId and email are required" });
+    return;
+  }
+  const displayName = name || email.split("@")[0];
+
+  const [existing] = await db.select().from(usersTable).where(eq(usersTable.clerkId, clerkId));
+  if (existing) {
+    res.json({
+      id: existing.id,
+      name: existing.name,
+      email: existing.email,
+      totalPoints: existing.totalPoints,
+      level: existing.level,
+      streak: existing.streak,
+      createdAt: existing.createdAt,
+    });
+    return;
+  }
+
+  const [byEmail] = await db.select().from(usersTable).where(eq(usersTable.email, email));
+  if (byEmail) {
+    const [updated] = await db
+      .update(usersTable)
+      .set({ clerkId })
+      .where(eq(usersTable.id, byEmail.id))
+      .returning();
+    res.json({
+      id: updated.id,
+      name: updated.name,
+      email: updated.email,
+      totalPoints: updated.totalPoints,
+      level: updated.level,
+      streak: updated.streak,
+      createdAt: updated.createdAt,
+    });
+    return;
+  }
+
+  const [created] = await db
+    .insert(usersTable)
+    .values({ clerkId, name: displayName, email })
+    .returning();
+  res.status(201).json({
+    id: created.id,
+    name: created.name,
+    email: created.email,
+    totalPoints: created.totalPoints,
+    level: created.level,
+    streak: created.streak,
+    createdAt: created.createdAt,
+  });
+});
+
+router.patch("/:id/name", async (req, res) => {
+  const id = Number(req.params.id);
+  const { name } = req.body as { name?: string };
+  if (!id || !name || !name.trim()) {
+    res.status(400).json({ error: "Valid id and name are required" });
+    return;
+  }
+  const [updated] = await db
+    .update(usersTable)
+    .set({ name: name.trim() })
+    .where(eq(usersTable.id, id))
+    .returning();
+  if (!updated) { res.status(404).json({ error: "Not found" }); return; }
+  res.json({
+    id: updated.id,
+    name: updated.name,
+    email: updated.email,
+    totalPoints: updated.totalPoints,
+    level: updated.level,
+    streak: updated.streak,
+    createdAt: updated.createdAt,
+  });
+});
+
 router.get("/:id", async (req, res) => {
   const parsed = GetUserParams.safeParse({ id: Number(req.params.id) });
   if (!parsed.success) {

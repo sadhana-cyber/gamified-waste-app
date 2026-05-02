@@ -3,22 +3,23 @@ import { Link, useLocation } from "wouter";
 import { Home, Plus, Trophy, Award, User, Leaf, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useClerk, useUser } from "@clerk/react";
+import { useDbUserContext } from "@/contexts/db-user-context";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const { signOut } = useClerk();
   const { user } = useUser();
+  const { dbUser } = useDbUserContext();
 
-  const initials = user?.fullName
-    ? user.fullName.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
-    : user?.primaryEmailAddress?.emailAddress?.slice(0, 2).toUpperCase() ?? "ME";
+  const displayName = dbUser?.name || user?.fullName || user?.primaryEmailAddress?.emailAddress?.split("@")[0] || "User";
+  const initials = displayName.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2) || "ME";
 
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: Home },
     { href: "/log", label: "Log Waste", icon: Plus, highlight: true },
     { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
     { href: "/achievements", label: "Achievements", icon: Award },
-    { href: "/profile/1", label: "Profile", icon: User },
+    { href: "/profile/me", label: "Profile", icon: User },
   ];
 
   return (
@@ -87,7 +88,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <p className="font-bold text-sm truncate">{user?.fullName ?? user?.primaryEmailAddress?.emailAddress ?? "User"}</p>
+              <p className="font-bold text-sm truncate">{displayName}</p>
               <p className="text-xs text-muted-foreground truncate">{user?.primaryEmailAddress?.emailAddress}</p>
             </div>
             <button
