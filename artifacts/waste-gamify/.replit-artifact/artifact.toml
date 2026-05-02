@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Gamified Waste Management"
+version = "1.0.0"
+id = "artifacts/waste-gamify"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23949
+
+[services.development]
+run = "pnpm --filter @workspace/waste-gamify run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/waste-gamify", "run", "build" ]
+publicDir = "artifacts/waste-gamify/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23949"
+BASE_PATH = "/"

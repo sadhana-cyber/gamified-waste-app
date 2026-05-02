@@ -3,20 +3,27 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Gamified Waste Management API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: users
+    description: User operations
+  - name: waste-logs
+    description: Waste log operations
+  - name: achievements
+    description: Achievement operations
+  - name: leaderboard
+    description: Leaderboard and stats operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +31,215 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /users:
+    get:
+      operationId: listUsers
+      tags: [users]
+      summary: List all users
+      responses:
+        "200":
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    post:
+      operationId: createUser
+      tags: [users]
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserBody"
+      responses:
+        "201":
+          description: Created user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /users/{id}:
+    get:
+      operationId: getUser
+      tags: [users]
+      summary: Get a user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: Not found
+
+  /users/{id}/stats:
+    get:
+      operationId: getUserStats
+      tags: [users]
+      summary: Get a user's waste stats by category
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserStats"
+
+  /users/{id}/achievements:
+    get:
+      operationId: getUserAchievements
+      tags: [users]
+      summary: Get a user's unlocked achievements
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User achievements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserAchievement"
+
+  /waste-logs:
+    get:
+      operationId: listWasteLogs
+      tags: [waste-logs]
+      summary: List waste logs
+      parameters:
+        - name: userId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of waste logs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WasteLog"
+    post:
+      operationId: createWasteLog
+      tags: [waste-logs]
+      summary: Log a waste disposal event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateWasteLogBody"
+      responses:
+        "201":
+          description: Created waste log with points awarded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WasteLogResult"
+
+  /achievements:
+    get:
+      operationId: listAchievements
+      tags: [achievements]
+      summary: List all achievements
+      responses:
+        "200":
+          description: List of achievements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Achievement"
+
+  /leaderboard:
+    get:
+      operationId: getLeaderboard
+      tags: [leaderboard]
+      summary: Get top users ranked by points
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: Leaderboard
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LeaderboardEntry"
+
+  /platform-stats:
+    get:
+      operationId: getPlatformStats
+      tags: [leaderboard]
+      summary: Get overall platform statistics
+      responses:
+        "200":
+          description: Platform stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlatformStats"
+
+  /activity:
+    get:
+      operationId: getRecentActivity
+      tags: [leaderboard]
+      summary: Get recent waste log activity feed
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: Recent activity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityItem"
+
 components:
   schemas:
     HealthStatus:
@@ -31,6 +247,204 @@ components:
       properties:
         status:
           type: string
-      required:
-        - status
+      required: [status]
 
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        totalPoints:
+          type: integer
+        level:
+          type: integer
+        streak:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, name, email, totalPoints, level, streak, createdAt]
+
+    CreateUserBody:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+      required: [name, email]
+
+    WasteLog:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        userName:
+          type: string
+        category:
+          type: string
+          enum: [recyclable, organic, hazardous, general, electronic]
+        weightKg:
+          type: number
+        pointsEarned:
+          type: integer
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, userId, userName, category, weightKg, pointsEarned, createdAt]
+
+    CreateWasteLogBody:
+      type: object
+      properties:
+        userId:
+          type: integer
+        category:
+          type: string
+          enum: [recyclable, organic, hazardous, general, electronic]
+        weightKg:
+          type: number
+        notes:
+          type: string
+      required: [userId, category, weightKg]
+
+    WasteLogResult:
+      type: object
+      properties:
+        wasteLog:
+          $ref: "#/components/schemas/WasteLog"
+        pointsEarned:
+          type: integer
+        newTotalPoints:
+          type: integer
+        newLevel:
+          type: integer
+        newAchievements:
+          type: array
+          items:
+            $ref: "#/components/schemas/Achievement"
+      required: [wasteLog, pointsEarned, newTotalPoints, newLevel, newAchievements]
+
+    Achievement:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+        pointsRequired:
+          type: integer
+        category:
+          type: string
+      required: [id, name, description, icon, pointsRequired, category]
+
+    UserAchievement:
+      type: object
+      properties:
+        id:
+          type: integer
+        achievement:
+          $ref: "#/components/schemas/Achievement"
+        unlockedAt:
+          type: string
+          format: date-time
+      required: [id, achievement, unlockedAt]
+
+    UserStats:
+      type: object
+      properties:
+        userId:
+          type: integer
+        totalWeight:
+          type: number
+        totalLogs:
+          type: integer
+        byCategory:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryStat"
+        weeklyPoints:
+          type: integer
+        monthlyPoints:
+          type: integer
+      required: [userId, totalWeight, totalLogs, byCategory, weeklyPoints, monthlyPoints]
+
+    CategoryStat:
+      type: object
+      properties:
+        category:
+          type: string
+        weightKg:
+          type: number
+        count:
+          type: integer
+        points:
+          type: integer
+      required: [category, weightKg, count, points]
+
+    LeaderboardEntry:
+      type: object
+      properties:
+        rank:
+          type: integer
+        userId:
+          type: integer
+        name:
+          type: string
+        totalPoints:
+          type: integer
+        level:
+          type: integer
+        streak:
+          type: integer
+        totalLogs:
+          type: integer
+      required: [rank, userId, name, totalPoints, level, streak, totalLogs]
+
+    PlatformStats:
+      type: object
+      properties:
+        totalUsers:
+          type: integer
+        totalLogs:
+          type: integer
+        totalWeightKg:
+          type: number
+        totalPointsAwarded:
+          type: integer
+        topCategory:
+          type: string
+        co2SavedKg:
+          type: number
+      required: [totalUsers, totalLogs, totalWeightKg, totalPointsAwarded, topCategory, co2SavedKg]
+
+    ActivityItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        userName:
+          type: string
+        category:
+          type: string
+        weightKg:
+          type: number
+        pointsEarned:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, userId, userName, category, weightKg, pointsEarned, createdAt]
