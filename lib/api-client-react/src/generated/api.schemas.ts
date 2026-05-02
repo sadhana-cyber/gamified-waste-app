@@ -132,6 +132,24 @@ export interface ActivityItem {
   createdAt: string;
 }
 
+export interface RequestUploadUrlBody {
+  name: string;
+  size: number;
+  contentType: string;
+}
+
+export type RequestUploadUrlResponseMetadata = {
+  name: string;
+  size: number;
+  contentType: string;
+};
+
+export interface RequestUploadUrlResponse {
+  uploadURL: string;
+  objectPath: string;
+  metadata: RequestUploadUrlResponseMetadata;
+}
+
 export type ListWasteLogsParams = {
   userId?: number;
   category?: string;
