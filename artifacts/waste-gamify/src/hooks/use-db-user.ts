@@ -30,7 +30,7 @@ export function useDbUser() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           clerkId: user.id,
-          name: dbUser?.name || user.fullName || email.split("@")[0],
+        name: user.username || user.fullName || email.split("@")[0],
           email,
         }),
       });
@@ -41,7 +41,7 @@ export function useDbUser() {
     } finally {
       setLoading(false);
     }
-  }, [user, dbUser?.name]);
+  }, [user]);
 
   useEffect(() => {
     if (!isLoaded) return;
