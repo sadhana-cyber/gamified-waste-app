@@ -29,7 +29,7 @@ export default function Dashboard() {
   const userId = 1;
   const { data: user, isLoading: userLoading } = useGetUser(userId, { query: { enabled: true, queryKey: ["user", userId] } });
   const { data: userStats, isLoading: userStatsLoading } = useGetUserStats(userId, { query: { enabled: true, queryKey: ["userStats", userId] } });
-  const displayName = clerkUser?.fullName?.trim() || user?.name?.trim() || "EcoWarrior";
+  const displayName = clerkUser?.username?.trim() || clerkUser?.fullName?.trim() || user?.name?.trim() || "EcoWarrior";
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -46,7 +46,6 @@ export default function Dashboard() {
         </Link>
       </header>
 
-      {/* User Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatCard 
           icon={Trophy} 
@@ -163,7 +162,7 @@ function ImpactMetric({ value, label }: { value: string | number; label: string 
 
 function PlusIcon(props: any) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinelinejoin="round" {...props}>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
       <path d="M5 12h14" />
       <path d="M12 5v14" />
     </svg>

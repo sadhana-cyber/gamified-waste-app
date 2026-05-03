@@ -19,7 +19,10 @@ export function useDbUser() {
   const [loading, setLoading] = useState(true);
 
   const sync = useCallback(async () => {
-    if (!user) { setLoading(false); return; }
+    if (!user) {
+      setLoading(false);
+      return;
+    }
     try {
       const email = user.primaryEmailAddress?.emailAddress ?? "";
       const res = await fetch(`${BASE}/api/users/sync`, {
@@ -27,7 +30,7 @@ export function useDbUser() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           clerkId: user.id,
-          name: user.fullName || email.split("@")[0],
+          name: dbUser?.name || user.fullName || email.split("@")[0],
           email,
         }),
       });
@@ -38,7 +41,7 @@ export function useDbUser() {
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, dbUser?.name]);
 
   useEffect(() => {
     if (!isLoaded) return;
