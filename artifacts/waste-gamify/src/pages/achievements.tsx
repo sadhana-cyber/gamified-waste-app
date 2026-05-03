@@ -7,7 +7,7 @@ export default function Achievements() {
   const { dbUser, loading: dbUserLoading } = useDbUserContext();
   const currentUserId = dbUser?.id;
   const { data: allAchievements, isLoading: allLoading } = useListAchievements({ query: { queryKey: ['achievements'] } });
-  const { data: userAchievements, isLoading: userLoading } = useGetUserAchievements(currentUserId!, { query: { enabled: !!currentUserId, queryKey: ['userAchievements', 'me', currentUserId] } });
+  const { data: userAchievements, isLoading: userLoading } = useGetUserAchievements(currentUserId!, { query: { enabled: !!currentUserId, queryKey: ['userAchievements', currentUserId, 'live'] } });
 
   const unlockedIds = new Set(userAchievements?.map(ua => achId(ua.achievement)) || []);
 

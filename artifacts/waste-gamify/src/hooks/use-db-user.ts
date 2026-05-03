@@ -27,6 +27,7 @@ export function useDbUser() {
       const email = user.primaryEmailAddress?.emailAddress ?? "";
       const res = await fetch(`${BASE}/api/users/sync`, {
         method: "POST",
+        cache: "no-store",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           clerkId: user.id,
@@ -52,6 +53,7 @@ export function useDbUser() {
     if (!dbUser) return;
     const res = await fetch(`${BASE}/api/users/${dbUser.id}/name`, {
       method: "PATCH",
+      cache: "no-store",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: newName }),
     });
