@@ -6,7 +6,6 @@ interface DbUserContextValue {
   loading: boolean;
   updateName: (name: string) => Promise<boolean | undefined>;
   refetch: () => Promise<void>;
-  refresh: () => Promise<void>;
 }
 
 const DbUserContext = createContext<DbUserContextValue>({
@@ -14,7 +13,6 @@ const DbUserContext = createContext<DbUserContextValue>({
   loading: true,
   updateName: async () => undefined,
   refetch: async () => {},
-  refresh: async () => {},
 });
 
 export function DbUserProvider({ children }: { children: React.ReactNode }) {

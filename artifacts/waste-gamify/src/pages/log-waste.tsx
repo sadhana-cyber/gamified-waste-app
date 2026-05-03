@@ -37,7 +37,6 @@ export default function LogWaste() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const createLog = useCreateWasteLog();
-  const { data: user } = useGetUser(currentUserId!, { query: { enabled: !!currentUserId, queryKey: ["user", currentUserId] } });
   const { uploadFile, isUploading, progress, uploadedPhoto, error: uploadError, clearPhoto } = usePhotoUpload();
 
   const form = useForm<z.infer<typeof logSchema>>({
@@ -77,8 +76,6 @@ export default function LogWaste() {
         queryClient.invalidateQueries({ queryKey: ["wasteLogs", currentUserId] }),
         queryClient.invalidateQueries({ queryKey: ["userAchievements", currentUserId] }),
       ]);
-      await queryClient.refetchQueries({ queryKey: ["user", currentUserId], type: "active" });
-      await queryClient.refetchQueries({ queryKey: ["userStats", currentUserId], type: "active" });
       setSuccessResult(result);
     } catch (e) {
       console.error(e);

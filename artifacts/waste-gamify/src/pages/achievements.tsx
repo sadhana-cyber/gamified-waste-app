@@ -4,10 +4,10 @@ import { cn } from "@/lib/utils";
 import { useDbUserContext } from "@/contexts/db-user-context";
 
 export default function Achievements() {
-  const { dbUser } = useDbUserContext();
+  const { dbUser, loading: dbUserLoading } = useDbUserContext();
   const currentUserId = dbUser?.id;
   const { data: allAchievements, isLoading: allLoading } = useListAchievements({ query: { queryKey: ['achievements'] } });
-  const { data: userAchievements, isLoading: userLoading } = useGetUserAchievements(currentUserId!, { query: { enabled: !!currentUserId, queryKey: ['userAchievements', currentUserId] } });
+  const { data: userAchievements, isLoading: userLoading } = useGetUserAchievements(currentUserId!, { query: { enabled: !!currentUserId, queryKey: ['userAchievements', currentUserId, 'signed-in'] } });
 
   const unlockedIds = new Set(userAchievements?.map(ua => achId(ua.achievement)) || []);
 
@@ -51,7 +51,7 @@ export default function Achievements() {
         </div>
       </div>
 
-      {allLoading || userLoading ? (
+      {dbUserLoading || allLoading || userLoading ? (
         <div className="h-64 flex items-center justify-center text-muted-foreground">Loading achievements...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

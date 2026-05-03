@@ -25,13 +25,17 @@ const categoryColors: Record<string, string> = {
 
 export default function Dashboard() {
   const { user: clerkUser } = useUser();
-  const { dbUser } = useDbUserContext();
+  const { dbUser, loading: dbUserLoading } = useDbUserContext();
   const { data: platformStats, isLoading: statsLoading } = useGetPlatformStats();
   const { data: recentActivity, isLoading: activityLoading } = useGetRecentActivity({ limit: 5 });
   const userId = dbUser?.id;
-  const { data: user, isLoading: userLoading } = useGetUser(userId!, { query: { enabled: !!userId, queryKey: ["user", userId] } });
-  const { data: userStats, isLoading: userStatsLoading } = useGetUserStats(userId!, { query: { enabled: !!userId, queryKey: ["userStats", userId] } });
+  const { data: user, isLoading: userLoading } = useGetUser(userId!, { query: { enabled: !!userId, queryKey: ["user", userId, "signed-in"] } });
+  const { data: userStats, isLoading: userStatsLoading } = useGetUserStats(userId!, { query: { enabled: !!userId, queryKey: ["userStats", userId, "signed-in"] } });
   const displayName = clerkUser?.username?.trim() || clerkUser?.fullName?.trim() || "EcoWarrior";
+
+  if (dbUserLoading || !userId) {
+    return <div className="h-screen flex items-center justify-center font-bold text-muted-foreground">Loading dashboard...</div>;
+  }
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">

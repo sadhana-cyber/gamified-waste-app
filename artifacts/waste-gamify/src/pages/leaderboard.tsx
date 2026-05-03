@@ -4,7 +4,7 @@ import { Link } from "wouter";
 import { cn } from "@/lib/utils";
 
 export default function Leaderboard() {
-  const { data: leaderboard, isLoading } = useGetLeaderboard({ limit: 100 }, { query: { queryKey: ['leaderboard'] } });
+  const { data: leaderboard, isLoading } = useGetLeaderboard({ limit: 100 }, { query: { queryKey: ['leaderboard', 'signed-in'] } });
 
   const getRankIcon = (rank: number) => {
     switch (rank) {

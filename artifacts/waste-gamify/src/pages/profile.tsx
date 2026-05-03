@@ -23,7 +23,7 @@ const categoryColors: Record<string, string> = {
 
 export default function Profile() {
   const params = useParams();
-  const { dbUser, updateName } = useDbUserContext();
+  const { dbUser, loading: dbUserLoading, updateName } = useDbUserContext();
 
   const [editingName, setEditingName] = useState(false);
   const [nameInput, setNameInput] = useState("");
@@ -32,17 +32,17 @@ export default function Profile() {
   const isMe = params.id === "me" || !params.id;
   const userId = isMe ? (dbUser?.id ?? null) : (params.id ? parseInt(params.id) : null);
 
-  const { data: user, isLoading: userLoading, refetch: refetchUser } = useGetUser(userId!, {
-    query: { enabled: !!userId, queryKey: ["user", userId] },
+  const { data: user, isLoading: userLoading } = useGetUser(userId!, {
+    query: { enabled: !!userId, queryKey: ["user", userId, "signed-in"] },
   });
   const { data: stats, isLoading: statsLoading } = useGetUserStats(userId!, {
-    query: { enabled: !!userId, queryKey: ["userStats", userId] },
+    query: { enabled: !!userId, queryKey: ["userStats", userId, "signed-in"] },
   });
   const { data: achievements } = useGetUserAchievements(userId!, {
-    query: { enabled: !!userId, queryKey: ["userAchievements", userId] },
+    query: { enabled: !!userId, queryKey: ["userAchievements", userId, "signed-in"] },
   });
   const { data: logs } = useListWasteLogs({ userId: userId! }, {
-    query: { enabled: !!userId, queryKey: ["wasteLogs", userId] },
+    query: { enabled: !!userId, queryKey: ["wasteLogs", userId, "signed-in"] },
   });
 
   const handleEditName = () => {
@@ -54,7 +54,6 @@ export default function Profile() {
     if (!nameInput.trim()) return;
     setSaving(true);
     await updateName(nameInput.trim());
-    await refetchUser();
     setSaving(false);
     setEditingName(false);
   };
@@ -64,7 +63,7 @@ export default function Profile() {
     setNameInput("");
   };
 
-  if (!userId || userLoading || statsLoading) {
+  if (dbUserLoading || !userId || userLoading || statsLoading) {
     return <div className="h-screen flex items-center justify-center font-bold text-muted-foreground">Loading profile...</div>;
   }
 
