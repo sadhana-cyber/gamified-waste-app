@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "wouter";
+import { useUser } from "@clerk/react";
 import { useGetUserStats, useGetUserAchievements, useListWasteLogs } from "@workspace/api-client-react";
 import { Trophy, Leaf, Flame, Zap, Recycle, Trash2, Calendar, Award, Pencil, Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -23,6 +24,7 @@ const categoryColors: Record<string, string> = {
 
 export default function Profile() {
   const params = useParams();
+  const { user: clerkUser } = useUser();
   const { dbUser, loading: dbUserLoading, updateName } = useDbUserContext();
 
   const [editingName, setEditingName] = useState(false);
@@ -46,7 +48,7 @@ export default function Profile() {
 
   useEffect(() => {
     let active = true;
-    if (!userId) return;
+    if (!userId || (isMe && !dbUser?.id)) return;
     setUserLoading(true);
     fetch(`${import.meta.env.BASE_URL.replace(/\/$/, "")}/api/users/${userId}`, { cache: "no-store" })
       .then((res) => (res.ok ? res.json() : null))
@@ -82,7 +84,7 @@ export default function Profile() {
     setNameInput("");
   };
 
-  if (dbUserLoading || !userId || userLoading || statsLoading) {
+  if (dbUserLoading || !userId || userLoading || statsLoading || (isMe && !clerkUser)) {
     return <div className="h-screen flex items-center justify-center font-bold text-muted-foreground">Loading profile...</div>;
   }
 
