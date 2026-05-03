@@ -5,6 +5,7 @@ import { Leaf, Flame, Droplets, Zap, Recycle, Trash2, Trophy, ArrowRight, User }
 import { useUser } from "@clerk/react";
 import { useGetPlatformStats, useGetRecentActivity, useGetUser, useGetUserStats } from "@workspace/api-client-react";
 import { cn } from "@/lib/utils";
+import { useDbUserContext } from "@/contexts/db-user-context";
 
 const categoryIcons: Record<string, React.ElementType> = {
   recyclable: Recycle,
@@ -24,11 +25,12 @@ const categoryColors: Record<string, string> = {
 
 export default function Dashboard() {
   const { user: clerkUser } = useUser();
+  const { dbUser } = useDbUserContext();
   const { data: platformStats, isLoading: statsLoading } = useGetPlatformStats();
   const { data: recentActivity, isLoading: activityLoading } = useGetRecentActivity({ limit: 5 });
-  const userId = 1;
-  const { data: user, isLoading: userLoading } = useGetUser(userId, { query: { enabled: true, queryKey: ["user", userId] } });
-  const { data: userStats, isLoading: userStatsLoading } = useGetUserStats(userId, { query: { enabled: true, queryKey: ["userStats", userId] } });
+  const userId = dbUser?.id;
+  const { data: user, isLoading: userLoading } = useGetUser(userId!, { query: { enabled: !!userId, queryKey: ["user", userId] } });
+  const { data: userStats, isLoading: userStatsLoading } = useGetUserStats(userId!, { query: { enabled: !!userId, queryKey: ["userStats", userId] } });
   const displayName = clerkUser?.username?.trim() || clerkUser?.fullName?.trim() || "EcoWarrior";
 
   return (
