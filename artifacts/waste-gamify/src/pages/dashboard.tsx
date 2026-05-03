@@ -27,12 +27,13 @@ export default function Dashboard() {
   const userId = 1;
   const { data: user, isLoading: userLoading } = useGetUser(userId, { query: { enabled: true, queryKey: ["user", userId] } });
   const { data: userStats, isLoading: userStatsLoading } = useGetUserStats(userId, { query: { enabled: true, queryKey: ["userStats", userId] } });
+  const displayName = user?.name?.trim() || "EcoWarrior";
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl md:text-5xl font-black text-foreground mb-2">Welcome back, {user?.name || "EcoWarrior"}!</h1>
+          <h1 className="text-3xl md:text-5xl font-black text-foreground mb-2">Welcome back, {displayName}!</h1>
           <p className="text-muted-foreground text-lg">Let's make an impact today.</p>
         </div>
         <Link href="/log">
@@ -118,7 +119,7 @@ export default function Dashboard() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold truncate">
-                          <span className="text-foreground">{activity.userName || "EcoWarrior"}</span> logged {activity.category}
+                          <span className="text-foreground">{activity.userName?.trim() || "EcoWarrior"}</span> logged {activity.category}
                         </p>
                         <p className="text-xs text-muted-foreground">{activity.weightKg} kg • +{activity.pointsEarned} pts</p>
                       </div>
