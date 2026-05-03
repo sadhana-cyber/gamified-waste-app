@@ -5,9 +5,6 @@ import { Leaf, Flame, Droplets, Zap, Recycle, Trash2, Trophy, ArrowRight, User }
 import { useGetPlatformStats, useGetRecentActivity, useGetUser, useGetUserStats } from "@workspace/api-client-react";
 import { cn } from "@/lib/utils";
 
-// Mock user 1 for now
-const CURRENT_USER_ID = 1;
-
 const categoryIcons: Record<string, React.ElementType> = {
   recyclable: Recycle,
   organic: Leaf,
@@ -27,8 +24,9 @@ const categoryColors: Record<string, string> = {
 export default function Dashboard() {
   const { data: platformStats, isLoading: statsLoading } = useGetPlatformStats();
   const { data: recentActivity, isLoading: activityLoading } = useGetRecentActivity({ limit: 5 });
-  const { data: user, isLoading: userLoading } = useGetUser(CURRENT_USER_ID, { query: { enabled: true, queryKey: ['user', CURRENT_USER_ID] } });
-  const { data: userStats, isLoading: userStatsLoading } = useGetUserStats(CURRENT_USER_ID, { query: { enabled: true, queryKey: ['userStats', CURRENT_USER_ID] } });
+  const userId = 1;
+  const { data: user, isLoading: userLoading } = useGetUser(userId, { query: { enabled: true, queryKey: ["user", userId] } });
+  const { data: userStats, isLoading: userStatsLoading } = useGetUserStats(userId, { query: { enabled: true, queryKey: ["userStats", userId] } });
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
