@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Leaf, Flame, Droplets, Zap, Recycle, Trash2, Trophy, ArrowRight, User } from "lucide-react";
 import { useUser } from "@clerk/react";
-import { useGetPlatformStats, useGetRecentActivity, useGetUser, useGetUserStats } from "@workspace/api-client-react";
+import { useGetPlatformStats, useGetRecentActivity } from "@workspace/api-client-react";
 import { cn } from "@/lib/utils";
 import { useDbUserContext } from "@/contexts/db-user-context";
 
@@ -29,9 +29,36 @@ export default function Dashboard() {
   const { data: platformStats, isLoading: statsLoading } = useGetPlatformStats();
   const { data: recentActivity, isLoading: activityLoading } = useGetRecentActivity({ limit: 5 });
   const userId = dbUser?.id;
-  const { data: user, isLoading: userLoading } = useGetUser(userId!, { query: { enabled: !!userId, queryKey: ["user", userId, "live"] } });
-  const { data: userStats, isLoading: userStatsLoading } = useGetUserStats(userId!, { query: { enabled: !!userId, queryKey: ["userStats", userId, "live"] } });
   const displayName = clerkUser?.username?.trim() || clerkUser?.fullName?.trim() || "EcoWarrior";
+  const [user, setUser] = useState<any>(null);
+  const [userLoading, setUserLoading] = useState(true);
+  const [userStats, setUserStats] = useState<any>(null);
+  const [userStatsLoading, setUserStatsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!userId) return;
+    const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+    let active = true;
+    setUserLoading(true);
+    setUserStatsLoading(true);
+    Promise.all([
+      fetch(`${base}/api/users/${userId}`, { cache: "no-store" }).then(r => (r.ok ? r.json() : null)),
+      fetch(`${base}/api/users/${userId}/stats`, { cache: "no-store" }).then(r => (r.ok ? r.json() : null)),
+    ]).then(([userData, statsData]) => {
+      if (!active) return;
+      setUser(userData);
+      setUserStats(statsData);
+      setUserLoading(false);
+      setUserStatsLoading(false);
+    }).catch(() => {
+      if (!active) return;
+      setUserLoading(false);
+      setUserStatsLoading(false);
+    });
+    return () => {
+      active = false;
+    };
+  }, [userId]);
 
   if (dbUserLoading || !userId) {
     return <div className="h-screen flex items-center justify-center font-bold text-muted-foreground">Loading dashboard...</div>;
