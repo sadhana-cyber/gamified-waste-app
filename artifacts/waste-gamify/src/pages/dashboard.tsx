@@ -120,7 +120,7 @@ export default function Dashboard() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold truncate">
-                          <span className="text-foreground">{activity.userName === "Saranya K G" ? "Rahini" : activity.userName}</span> logged {activity.category}
+                          <span className="text-foreground">{activity.userName || "Rahini"}</span> logged {activity.category}
                         </p>
                         <p className="text-xs text-muted-foreground">{activity.weightKg} kg • +{activity.pointsEarned} pts</p>
                       </div>
