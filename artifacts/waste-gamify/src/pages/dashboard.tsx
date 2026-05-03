@@ -29,8 +29,8 @@ export default function Dashboard() {
   const { data: platformStats, isLoading: statsLoading } = useGetPlatformStats();
   const { data: recentActivity, isLoading: activityLoading } = useGetRecentActivity({ limit: 5 });
   const userId = dbUser?.id;
-  const { data: user, isLoading: userLoading } = useGetUser(userId!, { query: { enabled: !!userId, queryKey: ["user", userId, "signed-in"] } });
-  const { data: userStats, isLoading: userStatsLoading } = useGetUserStats(userId!, { query: { enabled: !!userId, queryKey: ["userStats", userId, "signed-in"] } });
+  const { data: user, isLoading: userLoading } = useGetUser(userId!, { query: { enabled: !!userId, queryKey: ["user", "me", userId] } });
+  const { data: userStats, isLoading: userStatsLoading } = useGetUserStats(userId!, { query: { enabled: !!userId, queryKey: ["userStats", "me", userId] } });
   const displayName = clerkUser?.username?.trim() || clerkUser?.fullName?.trim() || "EcoWarrior";
 
   if (dbUserLoading || !userId) {

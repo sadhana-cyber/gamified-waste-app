@@ -33,16 +33,16 @@ export default function Profile() {
   const userId = isMe ? (dbUser?.id ?? null) : (params.id ? parseInt(params.id) : null);
 
   const { data: user, isLoading: userLoading } = useGetUser(userId!, {
-    query: { enabled: !!userId, queryKey: ["user", userId, "signed-in"] },
+    query: { enabled: !!userId, queryKey: ["user", "me", userId] },
   });
   const { data: stats, isLoading: statsLoading } = useGetUserStats(userId!, {
-    query: { enabled: !!userId, queryKey: ["userStats", userId, "signed-in"] },
+    query: { enabled: !!userId, queryKey: ["userStats", "me", userId] },
   });
   const { data: achievements } = useGetUserAchievements(userId!, {
-    query: { enabled: !!userId, queryKey: ["userAchievements", userId, "signed-in"] },
+    query: { enabled: !!userId, queryKey: ["userAchievements", "me", userId] },
   });
   const { data: logs } = useListWasteLogs({ userId: userId! }, {
-    query: { enabled: !!userId, queryKey: ["wasteLogs", userId, "signed-in"] },
+    query: { enabled: !!userId, queryKey: ["wasteLogs", "me", userId] },
   });
 
   const handleEditName = () => {
