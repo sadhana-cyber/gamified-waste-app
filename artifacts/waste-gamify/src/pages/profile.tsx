@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link } from "wouter";
-import { useGetUser, useGetUserStats, useGetUserAchievements, useListWasteLogs } from "@workspace/api-client-react";
+import { useGetUserStats, useGetUserAchievements, useListWasteLogs } from "@workspace/api-client-react";
 import { Trophy, Leaf, Flame, Zap, Recycle, Trash2, Calendar, Award, Pencil, Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useDbUserContext } from "@/contexts/db-user-context";
@@ -32,9 +32,6 @@ export default function Profile() {
   const isMe = params.id === "me" || !params.id;
   const userId = isMe ? (dbUser?.id ?? null) : (params.id ? parseInt(params.id) : null);
 
-  const { data: user, isLoading: userLoading } = useGetUser(userId!, {
-    query: { enabled: !!userId, queryKey: ["user", userId, "live"] },
-  });
   const { data: stats, isLoading: statsLoading } = useGetUserStats(userId!, {
     query: { enabled: !!userId, queryKey: ["userStats", userId, "live"] },
   });
@@ -44,6 +41,28 @@ export default function Profile() {
   const { data: logs } = useListWasteLogs({ userId: userId! }, {
     query: { enabled: !!userId, queryKey: ["wasteLogs", userId, "live"] },
   });
+  const [user, setUser] = useState<typeof dbUser>(dbUser);
+  const [userLoading, setUserLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    if (!userId) return;
+    setUserLoading(true);
+    fetch(`${import.meta.env.BASE_URL.replace(/\/$/, "")}/api/users/${userId}`, { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (active) {
+          setUser(data);
+          setUserLoading(false);
+        }
+      })
+      .catch(() => {
+        if (active) setUserLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [userId]);
 
   const handleEditName = () => {
     setNameInput(user?.name ?? dbUser?.name ?? "");
@@ -71,7 +90,7 @@ export default function Profile() {
     return <div className="h-screen flex items-center justify-center font-bold text-destructive">User not found</div>;
   }
 
-  const displayName = user.name;
+  const displayName = user?.name || dbUser?.name || "EcoWarrior";
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
