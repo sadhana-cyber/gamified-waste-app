@@ -29,7 +29,7 @@ export default function Dashboard() {
   const userId = 1;
   const { data: user, isLoading: userLoading } = useGetUser(userId, { query: { enabled: true, queryKey: ["user", userId] } });
   const { data: userStats, isLoading: userStatsLoading } = useGetUserStats(userId, { query: { enabled: true, queryKey: ["userStats", userId] } });
-  const displayName = clerkUser?.username?.trim() || clerkUser?.fullName?.trim() || user?.name?.trim() || "EcoWarrior";
+  const displayName = clerkUser?.username?.trim() || clerkUser?.fullName?.trim() || "EcoWarrior";
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
