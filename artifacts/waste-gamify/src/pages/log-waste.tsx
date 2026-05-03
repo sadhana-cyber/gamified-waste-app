@@ -31,7 +31,7 @@ const categories = [
 export default function LogWaste() {
   const [, setLocation] = useLocation();
   const queryClient = useQueryClient();
-  const { dbUser } = useDbUserContext();
+  const { dbUser, refetch } = useDbUserContext();
   const currentUserId = dbUser?.id;
   const [successResult, setSuccessResult] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -83,6 +83,7 @@ export default function LogWaste() {
         queryClient.refetchQueries({ queryKey: ["wasteLogs", currentUserId, "live"], type: "active" }),
         queryClient.refetchQueries({ queryKey: ["leaderboard", "live"], type: "active" }),
       ]);
+      await refetch();
       setSuccessResult(result);
     } catch (e) {
       console.error(e);
