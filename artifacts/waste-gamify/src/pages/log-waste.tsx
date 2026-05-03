@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { useLocation } from "wouter";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -30,6 +31,7 @@ const categories = [
 
 export default function LogWaste() {
   const [, setLocation] = useLocation();
+  const queryClient = useQueryClient();
   const [successResult, setSuccessResult] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -64,6 +66,15 @@ export default function LogWaste() {
           notes: data.notes ?? (uploadedPhoto ? `[Photo attached] ${uploadedPhoto.objectPath}` : undefined),
         },
       });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["user", CURRENT_USER_ID] }),
+        queryClient.invalidateQueries({ queryKey: ["userStats", CURRENT_USER_ID] }),
+        queryClient.invalidateQueries({ queryKey: ["leaderboard"] }),
+        queryClient.invalidateQueries({ queryKey: ["platformStats"] }),
+        queryClient.invalidateQueries({ queryKey: ["activity"] }),
+        queryClient.invalidateQueries({ queryKey: ["wasteLogs", CURRENT_USER_ID] }),
+        queryClient.invalidateQueries({ queryKey: ["userAchievements", CURRENT_USER_ID] }),
+      ]);
       setSuccessResult(result);
     } catch (e) {
       console.error(e);
