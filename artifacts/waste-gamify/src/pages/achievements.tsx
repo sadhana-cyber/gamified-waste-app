@@ -1,12 +1,13 @@
 import { useListAchievements, useGetUserAchievements } from "@workspace/api-client-react";
 import { Lock, Award } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const CURRENT_USER_ID = 1;
+import { useDbUserContext } from "@/contexts/db-user-context";
 
 export default function Achievements() {
+  const { dbUser } = useDbUserContext();
+  const currentUserId = dbUser?.id;
   const { data: allAchievements, isLoading: allLoading } = useListAchievements({ query: { queryKey: ['achievements'] } });
-  const { data: userAchievements, isLoading: userLoading } = useGetUserAchievements(CURRENT_USER_ID, { query: { enabled: true, queryKey: ['userAchievements', CURRENT_USER_ID] } });
+  const { data: userAchievements, isLoading: userLoading } = useGetUserAchievements(currentUserId!, { query: { enabled: !!currentUserId, queryKey: ['userAchievements', currentUserId] } });
 
   const unlockedIds = new Set(userAchievements?.map(ua => achId(ua.achievement)) || []);
 

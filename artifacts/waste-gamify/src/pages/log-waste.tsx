@@ -7,13 +7,12 @@ import * as z from "zod";
 import { Leaf, Flame, Zap, Recycle, Trash2, ArrowRight, Loader2, CheckCircle2, Camera, X, ImagePlus } from "lucide-react";
 import { useCreateWasteLog, useGetUser, WasteLogCategory } from "@workspace/api-client-react";
 import { usePhotoUpload } from "@/hooks/use-photo-upload";
+import { useDbUserContext } from "@/contexts/db-user-context";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-
-const CURRENT_USER_ID = 1;
 
 const logSchema = z.object({
   category: z.nativeEnum(WasteLogCategory),
@@ -32,11 +31,13 @@ const categories = [
 export default function LogWaste() {
   const [, setLocation] = useLocation();
   const queryClient = useQueryClient();
+  const { dbUser } = useDbUserContext();
+  const currentUserId = dbUser?.id;
   const [successResult, setSuccessResult] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const createLog = useCreateWasteLog();
-  const { data: user } = useGetUser(CURRENT_USER_ID, { query: { enabled: true, queryKey: ["user", CURRENT_USER_ID] } });
+  const { data: user } = useGetUser(currentUserId!, { query: { enabled: !!currentUserId, queryKey: ["user", currentUserId] } });
   const { uploadFile, isUploading, progress, uploadedPhoto, error: uploadError, clearPhoto } = usePhotoUpload();
 
   const form = useForm<z.infer<typeof logSchema>>({
@@ -57,23 +58,24 @@ export default function LogWaste() {
       : 0;
 
   const onSubmit = async (data: z.infer<typeof logSchema>) => {
+    if (!currentUserId) return;
     try {
       const result = await createLog.mutateAsync({
         data: {
-          userId: CURRENT_USER_ID,
+          userId: currentUserId,
           category: data.category as any,
           weightKg: data.weightKg,
           notes: data.notes ?? (uploadedPhoto ? `[Photo attached] ${uploadedPhoto.objectPath}` : undefined),
         },
       });
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["user", CURRENT_USER_ID] }),
-        queryClient.invalidateQueries({ queryKey: ["userStats", CURRENT_USER_ID] }),
+        queryClient.invalidateQueries({ queryKey: ["user", currentUserId] }),
+        queryClient.invalidateQueries({ queryKey: ["userStats", currentUserId] }),
         queryClient.invalidateQueries({ queryKey: ["leaderboard"] }),
         queryClient.invalidateQueries({ queryKey: ["platformStats"] }),
         queryClient.invalidateQueries({ queryKey: ["activity"] }),
-        queryClient.invalidateQueries({ queryKey: ["wasteLogs", CURRENT_USER_ID] }),
-        queryClient.invalidateQueries({ queryKey: ["userAchievements", CURRENT_USER_ID] }),
+        queryClient.invalidateQueries({ queryKey: ["wasteLogs", currentUserId] }),
+        queryClient.invalidateQueries({ queryKey: ["userAchievements", currentUserId] }),
       ]);
       setSuccessResult(result);
     } catch (e) {
