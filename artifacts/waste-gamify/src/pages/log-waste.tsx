@@ -77,10 +77,10 @@ export default function LogWaste() {
         queryClient.invalidateQueries({ queryKey: ["userAchievements", currentUserId] }),
       ]);
       await Promise.all([
-        queryClient.refetchQueries({ queryKey: ["user", "me", currentUserId], type: "active" }),
-        queryClient.refetchQueries({ queryKey: ["userStats", "me", currentUserId], type: "active" }),
-        queryClient.refetchQueries({ queryKey: ["userAchievements", "me", currentUserId], type: "active" }),
-        queryClient.refetchQueries({ queryKey: ["wasteLogs", "me", currentUserId], type: "active" }),
+        queryClient.refetchQueries({ queryKey: ["user", currentUserId, "live"], type: "active" }),
+        queryClient.refetchQueries({ queryKey: ["userStats", currentUserId, "live"], type: "active" }),
+        queryClient.refetchQueries({ queryKey: ["userAchievements", currentUserId, "live"], type: "active" }),
+        queryClient.refetchQueries({ queryKey: ["wasteLogs", currentUserId, "live"], type: "active" }),
         queryClient.refetchQueries({ queryKey: ["leaderboard", "live"], type: "active" }),
       ]);
       setSuccessResult(result);
