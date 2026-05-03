@@ -77,6 +77,8 @@ export default function LogWaste() {
         queryClient.invalidateQueries({ queryKey: ["wasteLogs", currentUserId] }),
         queryClient.invalidateQueries({ queryKey: ["userAchievements", currentUserId] }),
       ]);
+      await queryClient.refetchQueries({ queryKey: ["user", currentUserId], type: "active" });
+      await queryClient.refetchQueries({ queryKey: ["userStats", currentUserId], type: "active" });
       setSuccessResult(result);
     } catch (e) {
       console.error(e);
