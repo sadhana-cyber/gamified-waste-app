@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Leaf, Flame, Droplets, Zap, Recycle, Trash2, Trophy, ArrowRight, User } from "lucide-react";
+import { useUser } from "@clerk/react";
 import { useGetPlatformStats, useGetRecentActivity, useGetUser, useGetUserStats } from "@workspace/api-client-react";
 import { cn } from "@/lib/utils";
 
@@ -22,12 +23,13 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function Dashboard() {
+  const { user: clerkUser } = useUser();
   const { data: platformStats, isLoading: statsLoading } = useGetPlatformStats();
   const { data: recentActivity, isLoading: activityLoading } = useGetRecentActivity({ limit: 5 });
   const userId = 1;
   const { data: user, isLoading: userLoading } = useGetUser(userId, { query: { enabled: true, queryKey: ["user", userId] } });
   const { data: userStats, isLoading: userStatsLoading } = useGetUserStats(userId, { query: { enabled: true, queryKey: ["userStats", userId] } });
-  const displayName = user?.name?.trim() || "EcoWarrior";
+  const displayName = clerkUser?.fullName?.trim() || user?.name?.trim() || "EcoWarrior";
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
