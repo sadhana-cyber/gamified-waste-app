@@ -1,0 +1,341 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "clerkId": "user_3KrylqcsALAuyowFyP6FKxDeCK6",
+      "name": "Sadhana Selvakumar",
+      "email": "sdhnselvakumar@gmail.com",
+      "totalPoints": 0,
+      "level": 1,
+      "streak": 0,
+      "authToken": "eco_sec_1_sadhanaselvakumar",
+      "createdAt": "2026-10-05T17:47:32.819Z"
+    },
+    {
+      "id": 2,
+      "clerkId": "demo_user_2",
+      "name": "Alex Rivera (Verified)",
+      "email": "alex.rivera@ecocycle.org",
+      "totalPoints": 79,
+      "level": 1,
+      "streak": 3,
+      "authToken": "eco_sec_2_alexrivera",
+      "createdAt": "2026-10-06T17:47:32.830Z"
+    },
+    {
+      "id": 3,
+      "clerkId": "demo_user_3",
+      "name": "Maya Lin",
+      "email": "maya.lin@ecocycle.org",
+      "totalPoints": 278,
+      "level": 3,
+      "streak": 6,
+      "authToken": "eco_sec_3_mayalin",
+      "createdAt": "2026-10-07T17:47:32.831Z"
+    },
+    {
+      "id": 4,
+      "clerkId": "demo_user_4",
+      "name": "David Kim",
+      "email": "david.kim@ecocycle.org",
+      "totalPoints": 122,
+      "level": 2,
+      "streak": 4,
+      "authToken": "eco_sec_4_davidkim",
+      "createdAt": "2026-10-08T17:47:32.831Z"
+    }
+  ],
+  "wasteLogs": [
+    {
+      "id": 40,
+      "userId": 2,
+      "userName": "Alex Rivera (Verified)",
+      "category": "recyclable",
+      "weightKg": 3,
+      "pointsEarned": 25,
+      "notes": "Office cardboard recycling",
+      "createdAt": "2026-10-19T18:20:19.455Z"
+    },
+    {
+      "id": 11,
+      "userId": 3,
+      "userName": "Maya Lin",
+      "category": "organic",
+      "weightKg": 2,
+      "pointsEarned": 16,
+      "notes": "Compost kitchen scraps",
+      "createdAt": "2026-10-19T11:47:32.831Z"
+    },
+    {
+      "id": 15,
+      "userId": 4,
+      "userName": "David Kim",
+      "category": "electronic",
+      "weightKg": 1.8,
+      "pointsEarned": 38,
+      "notes": "Old audio cables and chargers",
+      "createdAt": "2026-10-19T11:47:32.831Z"
+    },
+    {
+      "id": 3,
+      "userId": 2,
+      "userName": "Alex Rivera (Verified)",
+      "category": "recyclable",
+      "weightKg": 2,
+      "pointsEarned": 20,
+      "notes": "Plastic bottles",
+      "createdAt": "2026-10-19T11:47:32.830Z"
+    },
+    {
+      "id": 10,
+      "userId": 3,
+      "userName": "Maya Lin",
+      "category": "electronic",
+      "weightKg": 4,
+      "pointsEarned": 60,
+      "notes": "Old broken microwave parts",
+      "createdAt": "2026-10-19T05:47:32.831Z"
+    },
+    {
+      "id": 14,
+      "userId": 4,
+      "userName": "David Kim",
+      "category": "organic",
+      "weightKg": 3,
+      "pointsEarned": 20,
+      "notes": "Fruit scraps",
+      "createdAt": "2026-10-19T05:47:32.831Z"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "userName": "Alex Rivera (Verified)",
+      "category": "organic",
+      "weightKg": 1.5,
+      "pointsEarned": 14,
+      "notes": "Vegetable peels & coffee grounds",
+      "createdAt": "2026-10-19T05:47:32.830Z"
+    },
+    {
+      "id": 9,
+      "userId": 3,
+      "userName": "Maya Lin",
+      "category": "hazardous",
+      "weightKg": 3,
+      "pointsEarned": 38,
+      "notes": "Expired fluorescent bulbs",
+      "createdAt": "2026-10-18T23:47:32.831Z"
+    },
+    {
+      "id": 13,
+      "userId": 4,
+      "userName": "David Kim",
+      "category": "recyclable",
+      "weightKg": 4,
+      "pointsEarned": 30,
+      "notes": "Tin cans and scrap metal",
+      "createdAt": "2026-10-18T23:47:32.831Z"
+    },
+    {
+      "id": 1,
+      "userId": 2,
+      "userName": "Alex Rivera (Verified)",
+      "category": "recyclable",
+      "weightKg": 2,
+      "pointsEarned": 20,
+      "notes": "Paper and cardboard boxes",
+      "createdAt": "2026-10-18T23:47:32.830Z"
+    },
+    {
+      "id": 8,
+      "userId": 3,
+      "userName": "Maya Lin",
+      "category": "recyclable",
+      "weightKg": 5,
+      "pointsEarned": 35,
+      "notes": "Clean newspaper bundles",
+      "createdAt": "2026-10-18T17:47:32.831Z"
+    },
+    {
+      "id": 12,
+      "userId": 4,
+      "userName": "David Kim",
+      "category": "hazardous",
+      "weightKg": 2.5,
+      "pointsEarned": 34,
+      "notes": "Leftover paint cans",
+      "createdAt": "2026-10-18T17:47:32.831Z"
+    },
+    {
+      "id": 7,
+      "userId": 3,
+      "userName": "Maya Lin",
+      "category": "electronic",
+      "weightKg": 2.5,
+      "pointsEarned": 45,
+      "notes": "Discarded computer peripherals",
+      "createdAt": "2026-10-18T11:47:32.831Z"
+    },
+    {
+      "id": 6,
+      "userId": 3,
+      "userName": "Maya Lin",
+      "category": "recyclable",
+      "weightKg": 3,
+      "pointsEarned": 25,
+      "notes": "Glass jars and aluminum cans",
+      "createdAt": "2026-10-18T05:47:32.831Z"
+    },
+    {
+      "id": 5,
+      "userId": 3,
+      "userName": "Maya Lin",
+      "category": "organic",
+      "weightKg": 4,
+      "pointsEarned": 24,
+      "notes": "Garden leaves and food waste",
+      "createdAt": "2026-10-17T23:47:32.831Z"
+    },
+    {
+      "id": 4,
+      "userId": 3,
+      "userName": "Maya Lin",
+      "category": "electronic",
+      "weightKg": 1.5,
+      "pointsEarned": 35,
+      "notes": "Old mobile phone batteries",
+      "createdAt": "2026-10-17T17:47:32.831Z"
+    }
+  ],
+  "userAchievements": [
+    {
+      "id": 1,
+      "userId": 2,
+      "achievementId": 1,
+      "achievement": {
+        "id": 1,
+        "name": "First Step",
+        "description": "Log your first waste recycling entry",
+        "icon": "🌱",
+        "pointsRequired": 10,
+        "category": "starter"
+      },
+      "unlockedAt": "2026-10-19T05:47:32.830Z"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "achievementId": 2,
+      "achievement": {
+        "id": 2,
+        "name": "Waste Sorter",
+        "description": "Earn 50 points by properly segregating waste",
+        "icon": "♻️",
+        "pointsRequired": 50,
+        "category": "recycling"
+      },
+      "unlockedAt": "2026-10-19T05:47:32.830Z"
+    },
+    {
+      "id": 3,
+      "userId": 3,
+      "achievementId": 1,
+      "achievement": {
+        "id": 1,
+        "name": "First Step",
+        "description": "Log your first waste recycling entry",
+        "icon": "🌱",
+        "pointsRequired": 10,
+        "category": "starter"
+      },
+      "unlockedAt": "2026-10-19T05:47:32.831Z"
+    },
+    {
+      "id": 4,
+      "userId": 3,
+      "achievementId": 2,
+      "achievement": {
+        "id": 2,
+        "name": "Waste Sorter",
+        "description": "Earn 50 points by properly segregating waste",
+        "icon": "♻️",
+        "pointsRequired": 50,
+        "category": "recycling"
+      },
+      "unlockedAt": "2026-10-19T05:47:32.831Z"
+    },
+    {
+      "id": 5,
+      "userId": 3,
+      "achievementId": 3,
+      "achievement": {
+        "id": 3,
+        "name": "Green Champion",
+        "description": "Reach 100 points contributing to a cleaner planet",
+        "icon": "🌿",
+        "pointsRequired": 100,
+        "category": "points"
+      },
+      "unlockedAt": "2026-10-19T05:47:32.831Z"
+    },
+    {
+      "id": 6,
+      "userId": 3,
+      "achievementId": 4,
+      "achievement": {
+        "id": 4,
+        "name": "Eco Warrior",
+        "description": "Reach 250 points and keep up the momentum",
+        "icon": "🛡️",
+        "pointsRequired": 250,
+        "category": "points"
+      },
+      "unlockedAt": "2026-10-19T05:47:32.831Z"
+    },
+    {
+      "id": 7,
+      "userId": 4,
+      "achievementId": 1,
+      "achievement": {
+        "id": 1,
+        "name": "First Step",
+        "description": "Log your first waste recycling entry",
+        "icon": "🌱",
+        "pointsRequired": 10,
+        "category": "starter"
+      },
+      "unlockedAt": "2026-10-19T05:47:32.831Z"
+    },
+    {
+      "id": 8,
+      "userId": 4,
+      "achievementId": 2,
+      "achievement": {
+        "id": 2,
+        "name": "Waste Sorter",
+        "description": "Earn 50 points by properly segregating waste",
+        "icon": "♻️",
+        "pointsRequired": 50,
+        "category": "recycling"
+      },
+      "unlockedAt": "2026-10-19T05:47:32.831Z"
+    },
+    {
+      "id": 9,
+      "userId": 4,
+      "achievementId": 3,
+      "achievement": {
+        "id": 3,
+        "name": "Green Champion",
+        "description": "Reach 100 points contributing to a cleaner planet",
+        "icon": "🌿",
+        "pointsRequired": 100,
+        "category": "points"
+      },
+      "unlockedAt": "2026-10-19T05:47:32.831Z"
+    }
+  ],
+  "nextUserId": 5,
+  "nextLogId": 41,
+  "nextUserAchievementId": 10
+}

@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug API Server",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/artifacts/api-server/dist/index.mjs",
+      "preLaunchTask": "npm: build",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

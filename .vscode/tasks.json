@@ -1,0 +1,42 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start All (Dev)",
+      "type": "npm",
+      "script": "dev",
+      "problemMatcher": [],
+      "isBackground": true,
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Start Web App (Vite)",
+      "type": "npm",
+      "script": "dev:web",
+      "problemMatcher": [],
+      "isBackground": true
+    },
+    {
+      "label": "Start API Server",
+      "type": "npm",
+      "script": "dev:server",
+      "problemMatcher": [],
+      "isBackground": true
+    },
+    {
+      "label": "Build Project",
+      "type": "npm",
+      "script": "build",
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "Push DB Schema (Drizzle)",
+      "type": "npm",
+      "script": "db:push",
+      "problemMatcher": []
+    }
+  ]
+}

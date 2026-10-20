@@ -1,33 +1,27 @@
 {
-  "name": "workspace",
-  "version": "0.0.0",
+  "name": "gamified-waste-management",
+  "version": "1.0.0",
   "license": "MIT",
-  "scripts": {
-    "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
-    "build": "pnpm run typecheck && pnpm -r --if-present run build",
-    "typecheck:libs": "tsc --build",
-    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
-  },
   "private": true,
-  "pnpm": {
-    "overrides": {
-      "react": "^18.3.1",
-      "react-dom": "^18.3.1",
-      "micromatch>picomatch": "^2.3.2",
-      "vite>picomatch": "^4.0.4",
-      "path-to-regexp": "^8.4.0",
-      "lodash": "^4.18.0",
-      "brace-expansion": "^2.0.3",
-      "yaml": "^2.8.3",
-      "postcss": "^8.5.10",
-      "uuid": "^14.0.0",
-      "@tootallnate/once": "^3.0.1",
-      "@esbuild-kit/esm-loader": "npm:tsx@^4.21.0",
-      "esbuild": "0.27.3"
-    }
+  "workspaces": [
+    "artifacts/*",
+    "lib/*",
+    "scripts"
+  ],
+  "scripts": {
+    "dev": "concurrently -n \"API,WEB\" -c \"blue,green\" \"npm run dev:server\" \"npm run dev:web\"",
+    "dev:server": "npm --prefix artifacts/api-server run dev",
+    "dev:web": "npm --prefix artifacts/waste-gamify run dev",
+    "build": "npm run build --workspaces --if-present",
+    "start": "node --enable-source-maps ./artifacts/api-server/dist/index.mjs",
+    "db:init": "node -e \"import('./lib/db/src/index.js').then(m => m.initDatabase(m.pool)).then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1); })\"",
+    "db:push": "npm --prefix lib/db run push",
+    "db:push-force": "npm --prefix lib/db run push-force"
   },
   "devDependencies": {
-    "typescript": "~5.9.2",
-    "prettier": "^3.8.1"
+    "concurrently": "^9.1.2",
+    "dotenv": "^16.4.7",
+    "prettier": "^3.8.1",
+    "typescript": "~5.9.2"
   }
 }

@@ -4,21 +4,22 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./schema": "./src/schema/index.ts"
+    ".": "./src/index.js",
+    "./schema": "./src/schema/index.js"
   },
   "scripts": {
-    "push": "drizzle-kit push --config ./drizzle.config.ts",
-    "push-force": "drizzle-kit push --force --config ./drizzle.config.ts"
+    "push": "drizzle-kit push --config ./drizzle.config.js",
+    "push-force": "drizzle-kit push --force --config ./drizzle.config.js"
   },
   "dependencies": {
-    "drizzle-orm": "catalog:",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.45.2",
     "drizzle-zod": "^0.8.3",
     "pg": "^8.20.0",
-    "zod": "catalog:"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@types/node": "catalog:",
+    "@types/node": "^25.3.3",
     "@types/pg": "^8.18.0",
     "drizzle-kit": "^0.31.9"
   }

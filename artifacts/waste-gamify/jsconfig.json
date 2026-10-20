@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "target": "es2022",
+    "jsx": "preserve",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@assets/*": ["../../attached_assets/*"]
+    }
+  },
+  "include": ["src/**/*"]
+}

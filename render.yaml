@@ -1,0 +1,36 @@
+# Render Blueprint specification for Gamified Waste Management App
+# Learn more: https://render.com/docs/blueprint-spec
+
+services:
+  # Fullstack Web Service: Express API Server + React Frontend
+  - type: web
+    name: gamified-waste-app
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: gamified-waste-db
+          property: connectionString
+      - key: VITE_CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false
+
+databases:
+  # Managed PostgreSQL Database on Render
+  - name: gamified-waste-db
+    databaseName: gamified_waste
+    user: waste_admin
+    plan: free
+    region: oregon
