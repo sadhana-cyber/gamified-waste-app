@@ -72,7 +72,7 @@ If you prefer to configure the services manually in the Render dashboard:
    - **Region**: Same region as your database.
    - **Branch**: `main`
    - **Runtime**: `Node`
-   - **Build Command**: `npm install && npm run build`
+   - **Build Command**: `npm install --include=dev && npm run build`
    - **Start Command**: `npm start`
    - **Plan**: *Free* (or *Starter*)
 4. Expand **Advanced** and set the **Health Check Path** to `/api/health`.
